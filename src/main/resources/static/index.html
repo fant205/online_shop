@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html ng-app="app">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+    <script src="index.js"></script>
+    <title>Клиенты</title>
+</head>
+<body>
+<div class="container" ng-controller="indexController">
+    <h3>Список продуктов</h3>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item" ng-show="!isUserLoggedIn()">
+                    <form class="align-middle" ng-submit="tryToAuth()">
+                        <div class="input-group input-group-sm" style="padding: 4px;">
+                            <input id="navLoginField" class="form-control" ng-model="user.username" type="text"
+                                   aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
+
+                            <input id="navPasswordField" class="form-control" ng-model="user.password" type="password"
+                                   aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
+
+                            <button id="navLoginSubmit" class="btn btn-outline-warning btn-sm"
+                                    style="margin-left: 10px;" type="submit">Войти
+                            </button>
+                        </div>
+                    </form>
+                </li>
+                <li class="nav-item" ng-show="isUserLoggedIn()" style="padding: 4px;">
+                    <button class="btn btn-outline-secondary btn-sm" ng-click="tryToLogout()">Выйти</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <form novalidate ng-submit="loadProducts()">
+        <input class="form-control" type="text" placeholder="Идентификатор продукта" ng-model="newFilterJson.id">
+        <p></p>
+        <input class="form-control" type="text" placeholder="Название продукта" ng-model="newFilterJson.title">
+        <p></p>
+        <input class="form-control" type="number" placeholder="Минимальная цена" ng-model="newFilterJson.min">
+        <p></p>
+        <input class="form-control" type="number" placeholder="Максимальная цена" ng-model="newFilterJson.max">
+        <p></p>
+        <button type="submit" class="btn btn-primary">Искать</button>
+    </form>
+
+    <p></p>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#" ng-click="nextPage(-1)">Предыдущая</a></li>
+            <li ng-repeat="p in pagesCount" class="page-item"><a class="page-link" href="#"
+                                                                 ng-click="loadProducts(p.id - 1)">{{p.id}}</a></li>
+            <li class="page-item"><a class="page-link" href="#" ng-click="nextPage(1)">Следующая</a></li>
+        </ul>
+    </nav>
+    <h6>Количество записей: <span class="badge bg-secondary">{{recordsTotal}}</span></h6>
+
+    <p></p>
+    <table class="table table-hover" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>ID</td>
+            <td>Название продукта</td>
+            <td>Цена</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tbody>
+        <tr ng-repeat="s in productList">
+            <td>{{s.id}}</td>
+            <td>{{s.title}}</td>
+            <td>{{s.price}}</td>
+            <td>
+                <button class="btn btn-primary" ng-click="addToCart(s)">Добавить в корзину</button>
+            </td>
+        </tbody>
+    </table>
+
+    <p></p>
+    <h3>Товары в корзине:</h3>
+    <table class="table table-hover" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>ID</td>
+            <td>Название продукта</td>
+            <td>Цена</td>
+            <td>Количество</td>
+        </tr>
+        <tbody>
+        <tr ng-repeat="s in cart">
+            <td>{{s.product.id}}</td>
+            <td>{{s.product.title}}</td>
+            <td>{{s.product.price}}</td>
+            <td>{{s.count}}</td>
+        </tbody>
+    </table>
+
+</div>
+
+
+</body>
+</html>
