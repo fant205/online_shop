@@ -1,11 +1,9 @@
 package com.alexey.shop.controllers;
 
-import com.alexey.shop.dto.ItemDto;
+import com.alexey.shop.dto.Cart;
 import com.alexey.shop.services.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/cart")
@@ -14,19 +12,24 @@ public class CartController {
 
     private final CartService cartService;
 
+    @GetMapping("/add/{id}")
+    public void addToCart(@PathVariable Long id) {
+        cartService.add(id);
+    }
+
     @GetMapping
-    public List<ItemDto> getAllItems() {
-        return cartService.findAll();
+    public Cart getCurrentCart() {
+        return cartService.getCurrentCart();
     }
 
-    @PostMapping
-    public void post(@RequestBody ItemDto itemDto) {
-        cartService.add(itemDto);
+    @GetMapping("/clear")
+    public void clear() {
+        cartService.clear();
     }
 
-    @PutMapping
-    public void put(@RequestBody ItemDto itemDto) {
-        cartService.modify(itemDto);
+    @GetMapping("/increment/{id}")
+    public void increment(@PathVariable Long id, @RequestParam(name = "count") Integer count) {
+        cartService.increment(id, count);
     }
 
     @DeleteMapping("/{id}")
