@@ -35,15 +35,8 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
         }
 
         $http({
-            url: contextPath,
-            method: 'GET',
-            params: {
-                id: id,
-                title: title,
-                min: min,
-                max: max,
-                page: page,
-                size: size,
+            url: contextPath, method: 'GET', params: {
+                id: id, title: title, min: min, max: max, page: page, size: size,
             }
         }).then(function (response) {
             $scope.productList = response.data.list;
@@ -71,8 +64,7 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
 
     $scope.delete = function (id) {
         $http({
-            url: contextPath + '/' + id,
-            method: 'DELETE',
+            url: contextPath + '/' + id, method: 'DELETE',
         }).then(function (response) {
             $scope.loadProducts();
         });
@@ -150,31 +142,36 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
         }
     };
 
-    $scope.addToCart = function (s) {
-
-        let request = {
-            "product": s,
-            "count": 1
-        };
-
-        $http.post('http://localhost:8189/app/api/v1/cart', request)
-            .then(function successCallback(response) {
-
-                $scope.loadCart();
-
-            }, function errorCallback(response) {
-
-            });
+    $scope.addToCart = function (productId) {
+        $http.get('http://localhost:8189/app/api/v1/cart/add/' + productId).then(function successCallback(response) {
+            $scope.loadCart();
+        }, function errorCallback(response) {
+        });
     };
 
-    $scope.loadCart = function (){
-        $http.get('http://localhost:8189/app/api/v1/cart')
-            .then(function successCallback(response) {
-                $scope.cart = response.data;
-            }, function errorCallback(response) {
+    $scope.loadCart = function () {
+        $http.get('http://localhost:8189/app/api/v1/cart').then(function successCallback(response) {
+            $scope.cart = response.data;
+        }, function errorCallback(response) {
+        });
+    };
 
-            });
+    $scope.clearCart = function () {
+        $http.get('http://localhost:8189/app/api/v1/cart/clear').then(function (response) {
+            $scope.loadCart();
+        });
+    };
 
+    $scope.increment = function (productId, count) {
+        $http.get('http://localhost:8189/app/api/v1/cart/increment/' + productId + '?count=' + count).then(function (response) {
+            $scope.loadCart();
+        });
+    };
+
+    $scope.delete = function (productId) {
+        $http.delete('http://localhost:8189/app/api/v1/cart/' + productId).then(function (response) {
+            $scope.loadCart();
+        });
     };
 
     $scope.loadProducts(0);

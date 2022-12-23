@@ -1,7 +1,6 @@
 package com.alexey.shop.services;
 
 import com.alexey.shop.dto.ProductDto;
-import com.alexey.shop.dto.ProductsGetDto;
 import com.alexey.shop.mapper.ProductMapper;
 import com.alexey.shop.model.Product;
 import com.alexey.shop.repository.ProductsRepository;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,12 +24,11 @@ public class ProductsService {
     private final ProductsRepository productsRepository;
     private final ProductValidator productValidator;
 
-    public ProductDto findProductById(Long id) {
-        Product product = productsRepository.findById(id).orElseThrow();
-        return ProductMapper.MAPPER.fromProduct(product);
+    public Optional<Product> findProductById(Long id) {
+        return productsRepository.findById(id);
     }
 
-    public ProductsGetDto findAllProducts(Long id, String title, Integer min, Integer max, Integer page, Integer size) {
+    public Page<Product> findAllProducts(Long id, String title, Integer min, Integer max, Integer page, Integer size) {
         Specification<Product> spec = Specification
                 .where(id == null ? null : ProductSpecification.equalId(id))
                 .and(StringUtils.hasText(title) ? ProductSpecification.likeTitle(title) : null)
@@ -38,9 +36,7 @@ public class ProductsService {
                 .and(max == null ? null : ProductSpecification.lessThanOrEqualToScore(max));
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("id"));
-        Page<Product> products = productsRepository.findAll(spec, pageRequest);
-        List<ProductDto> dtos = ProductMapper.MAPPER.fromProductList(products.toList());
-        return new ProductsGetDto(dtos, products.getTotalPages(), products.getTotalElements());
+        return productsRepository.findAll(spec, pageRequest);
     }
 
     @Transactional

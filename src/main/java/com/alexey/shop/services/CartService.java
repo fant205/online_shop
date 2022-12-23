@@ -1,52 +1,46 @@
 package com.alexey.shop.services;
 
-import com.alexey.shop.dto.ItemDto;
-import com.alexey.shop.mapper.ItemMapper;
-import com.alexey.shop.model.Item;
-import com.alexey.shop.repository.CartRepository;
+import com.alexey.shop.dto.Cart;
+import com.alexey.shop.exceptions.ResourceNotFoundException;
+import com.alexey.shop.model.Product;
 import com.alexey.shop.validators.CartValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import javax.annotation.PostConstruct;
 
 @Service
 @RequiredArgsConstructor
 public class CartService {
 
-    private final CartRepository cartRepository;
+    private final ProductsService productsService;
     private final CartValidator cartValidator;
+    private Cart tempCart;
 
-    public List<ItemDto> findAll() {
-        List<Item> all = cartRepository.findAll();
-        return ItemMapper.MAPPER.fromItem(all);
+    @PostConstruct
+    public void init() {
+        tempCart = new Cart();
     }
 
-    public void add(ItemDto itemDto) {
-        cartValidator.validate(itemDto);
-        Optional<Item> optional = cartRepository.findById(itemDto.getProduct().getId());
-        if (optional.isPresent()) {
-            Item item = optional.get();
-//            itemDto.setCount(item.getCount() + 1);
-            item.setCount(item.getCount() + 1);
-//            ItemMapper.MAPPER.update(item, itemDto);
-            cartRepository.update(item);
-        } else {
-            Item item = ItemMapper.MAPPER.toItem(itemDto);
-            item.setCount(1);
-            cartRepository.create(item);
-        }
+    public Cart getCurrentCart() {
+        return tempCart;
     }
 
-    public void modify(ItemDto itemDto) {
-        cartValidator.validate(itemDto);
-        Item item = cartRepository.findById(itemDto.getProduct().getId()).orElseThrow();
-        ItemMapper.MAPPER.update(item, itemDto);
-        cartRepository.update(item);
+    public void add(Long productId) {
+        Product product = productsService.findProductById(productId).orElseThrow(() -> new ResourceNotFoundException("Продукт не может быть добавлен в корзину. Продукт не найден по id: " + productId));
+        tempCart.add(product);
+    }
+
+    public void clear() {
+        tempCart.clear();
+    }
+
+    public void increment(Long productId, Integer count) {
+        tempCart.increment(productId, count);
     }
 
     public void delete(Long id) {
-        cartRepository.delete(id);
+        tempCart.delete(id);
     }
+
 }
