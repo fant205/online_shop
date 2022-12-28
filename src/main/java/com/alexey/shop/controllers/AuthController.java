@@ -3,7 +3,7 @@ package com.alexey.shop.controllers;
 import com.alexey.shop.dto.JwtRequest;
 import com.alexey.shop.dto.JwtResponse;
 import com.alexey.shop.exceptions.AppError;
-import com.alexey.shop.services.CustomUserDetailsService;
+import com.alexey.shop.services.UserService;
 import com.alexey.shop.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
-    private final CustomUserDetailsService userDetailsService;
+    private final UserService userDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
 
