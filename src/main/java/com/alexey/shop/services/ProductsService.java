@@ -15,7 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +26,15 @@ public class ProductsService {
 
     private final ProductsRepository productsRepository;
     private final ProductValidator productValidator;
+
+    public static final Function<Product, com.alexey.shop.soap.Product> functionProductToSoap = product -> {
+        com.alexey.shop.soap.Product soapProduct = new com.alexey.shop.soap.Product();
+        soapProduct.setId(product.getId());
+        soapProduct.setTitle(product.getTitle());
+        soapProduct.setPrice(product.getPrice());
+        return soapProduct;
+    };
+
 
     public Optional<Product> findProductById(Long id) {
         return productsRepository.findById(id);
@@ -61,4 +73,11 @@ public class ProductsService {
         productsRepository.delete(product);
     }
 
+    public List<com.alexey.shop.soap.Product> getAllProducts() {
+        return productsRepository.findAll().stream().map(functionProductToSoap).collect(Collectors.toList());
+    }
+
+    public com.alexey.shop.soap.Product getProductByName(String title){
+        return productsRepository.findByTitle(title).map(functionProductToSoap).get();
+    }
 }

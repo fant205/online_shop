@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://alex.org/Products.xsd"
+        targetNamespace="http://alex.org/Products.xsd" elementFormDefault="qualified">
+
+    <xsd:element name="getProductByNameRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="name" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="getProductByNameResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="product" type="tns:Product"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="getAllProductsRequest">
+        <xsd:complexType/>
+    </xsd:element>
+
+    <xsd:element name="getAllProductsResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="product" type="tns:Product" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="Product">
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:long"/>
+            <xsd:element name="title" type="xsd:string"/>
+            <xsd:element name="price" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+</xsd:schema>
