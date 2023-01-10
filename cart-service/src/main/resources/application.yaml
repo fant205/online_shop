@@ -1,0 +1,6 @@
+server:
+  port: 8190
+  servlet:
+    context-path: /carts
+url:
+  productById: http://localhost:8189/app/api/v1/products/
