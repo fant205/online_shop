@@ -24,9 +24,9 @@ public class Order {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+
+    @Column(name = "username")
+    private String username;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items;
@@ -48,7 +48,6 @@ public class Order {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
 
 
 }

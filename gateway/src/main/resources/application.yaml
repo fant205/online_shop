@@ -31,6 +31,13 @@ spring:
             - StripPrefix=1
             - PrefixPath=/online-shop-carts
             - JwtAuthFilter
-
+        - id: auth-service
+          uri: http://localhost:8188
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/online-shop-auth
+            - JwtAuthFilter
 jwt:
   secret: asdf;lkj12342;lkjsdafadsf

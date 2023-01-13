@@ -5,7 +5,7 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
         $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.springWebUser.token;
     }
 
-    const contextPath = 'http://localhost:5555/app/api/v1/products';
+    const contextPath = 'http://localhost:5555/core/api/v1/products';
     var currentPage = 0;
     var size = 5;
     var totalPages = null;
@@ -104,7 +104,7 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
     //-------------------------------------------------------------------------------------
 
     $scope.tryToAuth = function () {
-        $http.post('http://localhost:5555/core/auth', $scope.user)
+        $http.post('http://localhost:5555/auth/auth', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;

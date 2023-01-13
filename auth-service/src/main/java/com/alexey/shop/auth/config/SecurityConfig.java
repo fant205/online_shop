@@ -1,4 +1,4 @@
-package com.alexey.shop.core.config;
+package com.alexey.shop.auth.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,17 +18,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(securedEnabled = true)
 // указывает что надо использовать аннотаций @Secured в rest-контроллере для определния полномочий
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final JwtRequestFilter jwtRequestFilter;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/products/**").permitAll()
-                .antMatchers("/api/v1/orders/**").permitAll()
-                .antMatchers("/ws/**").permitAll()
-                .anyRequest().permitAll()//to make accessible h2 console
+                .anyRequest().permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -36,8 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
-
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 
     }

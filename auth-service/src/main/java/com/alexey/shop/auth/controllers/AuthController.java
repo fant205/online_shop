@@ -1,10 +1,10 @@
-package com.alexey.shop.core.controllers;
+package com.alexey.shop.auth.controllers;
 
+import com.alexey.shop.auth.services.UserService;
+import com.alexey.shop.auth.utils.JwtTokenUtil;
 import com.alexey.shop.core.api.AppError;
 import com.alexey.shop.core.api.JwtRequest;
 import com.alexey.shop.core.api.JwtResponse;
-import com.alexey.shop.core.services.UserService;
-import com.alexey.shop.core.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class AuthController {
     private final UserService userDetailsService;
     private final JwtTokenUtil jwtTokenUtil;

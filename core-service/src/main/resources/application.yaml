@@ -18,10 +18,9 @@ spring:
       enabled: true
       settings:
         web-allow-others: false
-
-jwt:
-  secret: asdfasdf#asdfwqerq#ertw
-  lifetime: 86400000
-
-url:
-  currentCartUrl: http://localhost:8190/carts/api/v1/cart
+integrations:
+  cart-service:
+    url: http://localhost:8190/online-shop-carts
+    read-timeout: 10000
+    write-timeout: 5000
+    connect-timeout: 5000
