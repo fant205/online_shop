@@ -1,7 +1,7 @@
 server:
-  port: 8189
+  port: 8188
   servlet:
-    context-path: /online-shop-core
+    context-path: /online-shop-auth
 spring:
   datasource:
     driver-class-name: org.h2.Driver
@@ -20,8 +20,5 @@ spring:
         web-allow-others: false
 
 jwt:
-  secret: asdfasdf#asdfwqerq#ertw
+  secret: asdf;lkj12342;lkjsdafadsf
   lifetime: 86400000
-
-url:
-  currentCartUrl: http://localhost:8190/carts/api/v1/cart

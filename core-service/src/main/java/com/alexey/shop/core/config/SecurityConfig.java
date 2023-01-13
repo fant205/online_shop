@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/products/**").permitAll()
-                .antMatchers("/api/v1/orders/**").authenticated()
+                .antMatchers("/api/v1/orders/**").permitAll()
                 .antMatchers("/ws/**").permitAll()
                 .anyRequest().permitAll()//to make accessible h2 console
                 .and()
