@@ -1,6 +1,6 @@
-package com.alexey.shop.core.repository;
+package com.alexey.shop.auth.repository;
 
-import com.alexey.shop.core.model.User;
+import com.alexey.shop.auth.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

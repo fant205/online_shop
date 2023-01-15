@@ -5,7 +5,7 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
         $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.springWebUser.token;
     }
 
-    const contextPath = 'http://localhost:8189/app/api/v1/products';
+    const contextPath = 'http://localhost:5555/core/api/v1/products';
     var currentPage = 0;
     var size = 5;
     var totalPages = null;
@@ -104,7 +104,7 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
     //-------------------------------------------------------------------------------------
 
     $scope.tryToAuth = function () {
-        $http.post('http://localhost:8189/app/auth', $scope.user)
+        $http.post('http://localhost:5555/auth/auth', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
@@ -143,39 +143,39 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
     };
 
     $scope.addToCart = function (productId) {
-        $http.get('http://localhost:8190/carts/api/v1/cart/add/' + productId).then(function successCallback(response) {
+        $http.get('http://localhost:5555/carts/api/v1/cart/add/' + productId).then(function successCallback(response) {
             $scope.loadCart();
         }, function errorCallback(response) {
         });
     };
 
     $scope.loadCart = function () {
-        $http.get('http://localhost:8190/carts/api/v1/cart').then(function successCallback(response) {
+        $http.get('http://localhost:5555/carts/api/v1/cart').then(function successCallback(response) {
             $scope.cart = response.data;
         }, function errorCallback(response) {
         });
     };
 
     $scope.clearCart = function () {
-        $http.get('http://localhost:8190/carts/api/v1/cart/clear').then(function (response) {
+        $http.get('http://localhost:5555/carts/api/v1/cart/clear').then(function (response) {
             $scope.loadCart();
         });
     };
 
     $scope.increment = function (productId, count) {
-        $http.get('http://localhost:8190/carts/api/v1/cart/increment/' + productId + '?count=' + count).then(function (response) {
+        $http.get('http://localhost:5555/carts/api/v1/cart/increment/' + productId + '?count=' + count).then(function (response) {
             $scope.loadCart();
         });
     };
 
     $scope.delete = function (productId) {
-        $http.delete('http://localhost:8189/carts/api/v1/cart/' + productId).then(function (response) {
+        $http.delete('http://localhost:5555/carts/api/v1/cart/' + productId).then(function (response) {
             $scope.loadCart();
         });
     };
 
     $scope.createOrder = function (productId) {
-        $http.post('http://localhost:8189/app/api/v1/orders').then(function (response) {
+        $http.post('http://localhost:5555/core/api/v1/orders').then(function (response) {
             $scope.clearCart();
         });
     };

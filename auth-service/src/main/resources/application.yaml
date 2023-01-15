@@ -1,7 +1,7 @@
 server:
-  port: 8189
+  port: 8188
   servlet:
-    context-path: /online-shop-core
+    context-path: /online-shop-auth
 spring:
   datasource:
     driver-class-name: org.h2.Driver
@@ -18,9 +18,7 @@ spring:
       enabled: true
       settings:
         web-allow-others: false
-integrations:
-  cart-service:
-    url: http://localhost:8190/online-shop-carts
-    read-timeout: 10000
-    write-timeout: 5000
-    connect-timeout: 5000
+
+jwt:
+  secret: asdf;lkj12342;lkjsdafadsf
+  lifetime: 86400000

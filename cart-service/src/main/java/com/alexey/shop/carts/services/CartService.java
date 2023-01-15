@@ -28,7 +28,7 @@ public class CartService {
     }
 
     public void add(Long productId) {
-        ProductDto product = productsServiceIntegration.getProductById(productId).orElseThrow(() -> new ResourceNotFoundException("Продукт не может быть добавлен в корзину. Продукт не найден по id: " + productId));
+        ProductDto product = productsServiceIntegration.getProductById(productId);
         tempCart.add(product);
     }
 

@@ -1,4 +1,4 @@
-package com.alexey.shop.core.model;
+package com.alexey.shop.auth.model;
 
 import lombok.Data;
 

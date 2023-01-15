@@ -1,8 +1,8 @@
-package com.alexey.shop.core.services;
+package com.alexey.shop.auth.services;
 
-import com.alexey.shop.core.model.Role;
-import com.alexey.shop.core.model.User;
-import com.alexey.shop.core.repository.UsersRepository;
+import com.alexey.shop.auth.model.Role;
+import com.alexey.shop.auth.model.User;
+import com.alexey.shop.auth.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,18 +28,14 @@ public class UserService implements UserDetailsService {
 
         Optional<User> userOptional = usersRepository.findByUsername(username);
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException(username));
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(Role::getName)
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        List<GrantedAuthority> authorities = user.getRoles().stream().map(Role::getName).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 
-    public Optional<User> findByUsername(String username){
+    public Optional<User> findByUsername(String username) {
         return usersRepository.findByUsername(username);
     }
-
 
 
 }
