@@ -2,7 +2,6 @@ package com.alexey.shop.core.services;
 
 import com.alexey.shop.core.api.CartDto;
 import com.alexey.shop.core.api.ProductNotFoundException;
-import com.alexey.shop.core.api.UserNotFoundException;
 import com.alexey.shop.core.integration.CartServiceIntegration;
 import com.alexey.shop.core.model.Order;
 import com.alexey.shop.core.model.OrderItem;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class OrdersService {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public void createOrder(String username) {
+    public Order createOrder(String username) {
         CartDto cart = cartServiceIntegration.getCurrentCart();
         Order order = Order.builder()
                 .totalPrice(cart.getTotalPrice())
@@ -44,7 +44,12 @@ public class OrdersService {
         });
 
         order.setItems(list);
-        orderRepository.save(order);
+        Order save = orderRepository.save(order);
         cartServiceIntegration.clear();
+        return save;
+    }
+
+    public Optional<Order> findById(Long id) {
+        return orderRepository.findById(id);
     }
 }
