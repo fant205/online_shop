@@ -4,12 +4,11 @@ package com.alexey.shop.carts.model;
 import com.alexey.shop.core.api.ProductDto;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Data
 public class Cart {
+
 
     private List<CartItem> items;
     private int totalPrice;
@@ -56,10 +55,13 @@ public class Cart {
     public void increment(Long productId, Integer count) {
         CartItem cartItem = findCartItem(productId);
         cartItem.setQuantity(cartItem.getQuantity() + count);
+        cartItem.setPrice(cartItem.getPricePerProduct() * cartItem.getQuantity());
         recalculate();
     }
 
     public void delete(Long id) {
+        CartItem cartItem = items.stream().filter(o -> o.getProductId().longValue() == id.longValue()).findFirst().get();
+        totalPrice = totalPrice - (cartItem.getPricePerProduct() * cartItem.getQuantity());
         items.removeIf(o -> o.getProductId().longValue() == id.longValue());
     }
 }

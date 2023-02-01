@@ -14,7 +14,7 @@ public class OrderController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrder(@RequestHeader String username) {
+    public void createOrder(@RequestHeader(defaultValue = "guest") String username) {
         ordersService.createOrder(username);
     }
 
