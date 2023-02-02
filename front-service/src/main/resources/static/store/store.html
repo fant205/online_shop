@@ -1,0 +1,51 @@
+<div>
+    <p></p>
+
+    <form novalidate ng-submit="loadProducts()">
+        <input class="form-control" type="text" placeholder="Идентификатор продукта" ng-model="newFilterJson.id">
+        <p></p>
+        <input class="form-control" type="text" placeholder="Название продукта" ng-model="newFilterJson.title">
+        <p></p>
+        <input class="form-control" type="number" placeholder="Минимальная цена" ng-model="newFilterJson.min">
+        <p></p>
+        <input class="form-control" type="number" placeholder="Максимальная цена" ng-model="newFilterJson.max">
+        <p></p>
+        <button type="submit" class="btn btn-primary">Искать</button>
+    </form>
+
+    <p></p>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#" ng-click="nextPage(-1)">Предыдущая</a></li>
+            <li ng-repeat="p in pagesCount" class="page-item"><a class="page-link" href="#!/store"
+                                                                 ng-click="loadProducts(p.id - 1)">{{p.id}}</a></li>
+            <li class="page-item"><a class="page-link" href="##!/store" ng-click="nextPage(1)">Следующая</a></li>
+        </ul>
+    </nav>
+    <h6>Количество записей: <span class="badge bg-secondary">{{recordsTotal}}</span></h6>
+    <p></p>
+
+    <h3>Каталог товаров</h3>
+    <p></p>
+
+    <table class="table table-hover" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>ID</td>
+            <td>Название продукта</td>
+            <td>Цена</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tbody>
+        <tr ng-repeat="p in productList">
+            <td>{{p.id}}</td>
+            <td>{{p.title}}</td>
+            <td>{{p.price}}</td>
+            <td>
+                <button class="btn btn-primary" ng-click="addToCart(p.id)">Добавить в корзину</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

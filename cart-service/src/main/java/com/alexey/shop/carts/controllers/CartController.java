@@ -15,28 +15,28 @@ public class CartController {
     private final CartConverter cartConverter;
 
     @GetMapping("/add/{id}")
-    public void addToCart(@PathVariable Long id) {
-        cartService.add(id);
+    public void addToCart(@PathVariable Long id, @RequestHeader(defaultValue = "guest") String username) {
+        cartService.add(id, username);
     }
 
     @GetMapping
-    public CartDto getCurrentCart() {
-        return cartConverter.entityToDto(cartService.getCurrentCart());
+    public CartDto getCurrentCart(@RequestHeader(defaultValue = "guest") String username) {
+        return cartConverter.entityToDto(cartService.getCurrentCart(username));
     }
 
     @GetMapping("/clear")
-    public void clear() {
-        cartService.clear();
+    public void clear(@RequestHeader(defaultValue = "guest") String username) {
+        cartService.clear(username);
     }
 
     @GetMapping("/increment/{id}")
-    public void increment(@PathVariable Long id, @RequestParam(name = "count") Integer count) {
-        cartService.increment(id, count);
+    public void increment(@PathVariable Long id, @RequestParam(name = "count") Integer count, @RequestHeader(defaultValue = "guest") String username) {
+        cartService.increment(id, count, username);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        cartService.delete(id);
+    public void delete(@PathVariable Long id, @RequestHeader(defaultValue = "guest") String username) {
+        cartService.delete(id, username);
     }
 
 }

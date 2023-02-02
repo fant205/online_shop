@@ -14,6 +14,12 @@ create table if not exists products
 insert into products (title, price)
 values ('Milk', 100),
        ('Bread', 80),
+       ('Cheese', 100),
+       ('Butter', 30),
+       ('Water', 20),
+       ('Juice', 10),
+       ('Bread', 80),
+
        ('Cheese', 90);
 
 
