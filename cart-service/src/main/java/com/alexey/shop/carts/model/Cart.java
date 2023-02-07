@@ -17,14 +17,20 @@ public class Cart {
         items = new ArrayList<>();
     }
 
-    public List<CartItem> getItems() {
-        return Collections.unmodifiableList(items);
-    }
-
     public void add(ProductDto product) {
         CartItem item = findCartItem(product.getId());
         if (item == null) {
             items.add(new CartItem(product.getId(), product.getTitle(), 1, product.getPrice(), product.getPrice()));
+        } else {
+            item.incrementQuantity();
+        }
+        recalculate();
+    }
+
+    public void add(CartItem product) {
+        CartItem item = findCartItem(product.getProductId());
+        if (item == null) {
+            items.add(new CartItem(product.getProductId(), product.getProductTitle(), 1, product.getPrice(), product.getPrice()));
         } else {
             item.incrementQuantity();
         }

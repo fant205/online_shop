@@ -32,7 +32,7 @@ public class OrderServiceTest extends SpringBootTestBase {
                 new CartItemDto(1L, "Test1", 1, 1, 1),
                 new CartItemDto(1L, "Test1", 1, 1, 1));
         cartDto.setItems(list);
-        Mockito.when(cartServiceIntegration.getCurrentCart()).thenReturn(cartDto);
+        Mockito.when(cartServiceIntegration.getCurrentCart("bob")).thenReturn(cartDto);
 
         Order bob = ordersService.createOrder("Bob");
 

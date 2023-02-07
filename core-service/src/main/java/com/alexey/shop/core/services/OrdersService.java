@@ -24,7 +24,7 @@ public class OrdersService {
 
     @Transactional
     public Order createOrder(String username) {
-        CartDto cart = cartServiceIntegration.getCurrentCart();
+        CartDto cart = cartServiceIntegration.getCurrentCart(username);
         Order order = Order.builder()
                 .totalPrice(cart.getTotalPrice())
                 .username(username)
@@ -51,5 +51,9 @@ public class OrdersService {
 
     public Optional<Order> findById(Long id) {
         return orderRepository.findById(id);
+    }
+
+    public List<Order> findByUsername(String username) {
+        return orderRepository.findByUsername(username);
     }
 }

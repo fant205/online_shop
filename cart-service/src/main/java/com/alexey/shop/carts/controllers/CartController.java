@@ -39,4 +39,9 @@ public class CartController {
         cartService.delete(id, username);
     }
 
+    @GetMapping("/merge")
+    public void merge(@RequestHeader String username) {
+        cartService.merge(username);
+    }
+
 }
