@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     private final UsersRepository usersRepository;
+    private final RoleService roleService;
 
     @Override
     @Transactional
@@ -37,5 +38,8 @@ public class UserService implements UserDetailsService {
         return usersRepository.findByUsername(username);
     }
 
-
+    public void createUser(User user) {
+        user.setRoles(List.of(roleService.getUserRole()));
+        usersRepository.save(user);
+    }
 }

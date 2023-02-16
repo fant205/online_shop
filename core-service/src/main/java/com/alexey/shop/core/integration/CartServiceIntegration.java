@@ -17,9 +17,10 @@ public class CartServiceIntegration {
     private final WebClient cartServiceWebClient;
 
 
-    public CartDto getCurrentCart() {
+    public CartDto getCurrentCart(String username) {
         return cartServiceWebClient.get()
                 .uri("/api/v1/cart/")
+                .header("username", username)
                 .retrieve()
                 .onStatus(
                         httpStatus -> httpStatus.value() == HttpStatus.NO_CONTENT.value(),

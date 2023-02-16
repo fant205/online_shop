@@ -23,6 +23,10 @@
               templateUrl: 'orders/orders.html',
               controller: 'ordersController'
           })
+          .when('/registration', {
+            templateUrl: 'registration/registration.html',
+            controller: 'registrationController'
+        })
           .otherwise({
               redirectTo: '/'
           });
@@ -63,7 +67,7 @@
 })();
 
 
-angular.module('app').controller('indexController', function ($scope, $rootScope, $http, $localStorage) {
+angular.module('app').controller('indexController', function ($scope, $rootScope, $http, $localStorage, $location) {
 
 
     if ($localStorage.springWebUser) {
@@ -178,6 +182,11 @@ angular.module('app').controller('indexController', function ($scope, $rootScope
                     $scope.user.username = null;
                     $scope.user.password = null;
                     $scope.loadProducts();
+
+                    console.log("Success login!");
+
+                    $scope.mergeCarts();
+
                 }
             }, function errorCallback(response) {
 
@@ -186,10 +195,10 @@ angular.module('app').controller('indexController', function ($scope, $rootScope
 
     $scope.tryToLogout = function () {
         $scope.clearUser();
-        if ($scope.user.username) {
+        if ($scope.user && $scope.user.username) {
             $scope.user.username = null;
         }
-        if ($scope.user.password) {
+        if ($scope.user && $scope.user.password) {
             $scope.user.password = null;
         }
         $location.path('/');
@@ -223,6 +232,15 @@ angular.module('app').controller('indexController', function ($scope, $rootScope
         });
     };
 
+    $scope.mergeCarts = function(){
+        $http.get('http://localhost:5555/carts/api/v1/cart/merge')
+            .then(function successCallback(response) {
+                $location.path('/');
+                console.log("Success merge carts!");
+            }, function errorCallback(response) {
+
+            });
+    }
 
     $scope.loadProducts(0);
 
